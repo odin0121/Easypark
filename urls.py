@@ -1,29 +1,30 @@
-"""
-URL configuration for EasyPark project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
-from django.urls import path,include
-
-
-from django.conf.urls.static import static
-from EasyPark import settings
-
+from django.urls import path
+import adminapp.views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('adminapp.urls')),
-    path('', include('clientapp.urls')),
-]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+    path('', adminapp.views.index, name='index'),
+    path('ad_home/', adminapp.views.ad_home, name="ad_home"),
+    path('addbuilding/', adminapp.views.addbuilding, name="addbuilding"),
+    # path('addpar_dtls/', adminapp.views.addpar_dtls, name="addpar_dtls"),
+    path('admin_log/', adminapp.views.admin_log, name="admin_log"),
+    path('addcmpn/', adminapp.views.addcmpn, name="addcmpn"),
+    path('addvtype/', adminapp.views.addvtype, name="addvtype"),
+    path('addvrate/', adminapp.views.addvrate, name="addvrate"),
+    #
+    # path("get_companies/", adminapp.views.get_companies, name="get_companies"),
+    # path("addpar_dtls/", adminapp.views.addpar_dtls, name="addpar_dtls"),
+    # path("get_building_details/", adminapp.views.get_building_details, name="get_building_details"),
+    path("addpar_dtls/", adminapp.views.addpar_dtls, name="addpar_dtls"),
+
+    path('get_building_details/', adminapp.views.get_building_details, name='get_building_details'),
+    path('get_vehicle_types/', adminapp.views.get_vehicle_types, name='get_vehicle_types'),
+    path('get_vehicle_rate/', adminapp.views.get_vehicle_rate, name='get_vehicle_rate'),
+    path('view_all_bookings/', adminapp.views.view_all_bookings, name="view_all_bookings"),
+    path('viewuser/', adminapp.views.viewuser, name="viewuser"),
+
+    # path('admin_lod/', adminapp.views.admin_lod, name="admin_lod"),
+    # path('admin_lod/', adminapp.views.admin_lod, name="admin_lod"),
+    # path('admin_lod/', adminapp.views.admin_lod, name="admin_lod"),
+    # path('admin_lod/', adminapp.views.admin_lod, name="admin_lod"),
+
+]
