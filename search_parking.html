@@ -1,0 +1,113 @@
+{% extends 'Clienthomepage.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Search</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 10px; }
+        h2 {margin-top: 40px; }
+        form { margin-bottom: 40px; margin-top: 40px; }
+        label { font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 40px; margin-bottom: 40px;}
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #65ba7c; }
+    </style>
+</head>
+<body>
+
+    <h2>Search Parking Details</h2>
+
+    <form method="GET" action="{% url 'search_parking1' %}">
+        <label for="location">Location:</label>
+        <select id="location" name="location">
+            <option value="">-- Select Location --</option>
+            {% for loc in locations %}
+                <option value="{{ loc }}">{{ loc }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="building">Building:</label>
+        <select id="building" name="building">
+            <option value="">-- Select Building --</option>
+        </select>
+
+        <label for="company">Company:</label>
+        <select id="company" name="company">
+            <option value="">-- Select Company --</option>
+        </select>
+
+        <label for="vehicle">Vehicle Type:</label>
+        <select id="vehicle" name="vehicle">
+            <option value="">-- Select Vehicle --</option>
+        </select>
+
+        <button type="submit">Search</button>
+    </form>
+
+    <h3>Search Results</h3>
+    {% if results %}
+        <table>
+            <tr>
+                <th>Location</th>
+                <th>Building</th>
+                <th>Company</th>
+                <th>Vehicle Type</th>
+                <th>Rate</th>
+            </tr>
+            {% for r in results %}
+            <tr>
+                <td>{{ r.Location }}</td>
+                <td>{{ r.Bid.BuildingName }}</td>
+                <td>{{ r.Cid.CompanyName }}</td>
+                <td>{{ r.Vehi_type_id.VehicleName }}</td>
+                <td>{{ r.Veh_rate }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+
+    <script>
+        $(document).ready(function () {
+            $("#location").change(function () {
+                var location = $(this).val();
+                $("#building").html('<option value="">Loading...</option>');
+                $("#company").html('<option value="">-- Select Company --</option>');
+                $("#vehicle").html('<option value="">-- Select Vehicle --</option>');
+
+                $.ajax({
+                    url: "{% url 'get_filter_data' %}",
+                    data: { 'location': location },
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#building").html('<option value="">-- Select Building --</option>');
+                        $("#company").html('<option value="">-- Select Company --</option>');
+                        $("#vehicle").html('<option value="">-- Select Vehicle --</option>');
+
+                        $.each(data.buildings, function (index, value) {
+                            $("#building").append('<option value="' + value.id + '">' + value.BuildingName + '</option>');
+                        });
+
+                        $.each(data.companies, function (index, value) {
+                            $("#company").append('<option value="' + value.id + '">' + value.CompanyName + '</option>');
+                        });
+
+                        $.each(data.vehicles, function (index, value) {
+                            $("#vehicle").append('<option value="' + value.id + '">' + value.VehicleName + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+{% endblock %}

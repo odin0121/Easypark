@@ -1,0 +1,116 @@
+{% extends 'Clienthomepage.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HVAC | Blog</title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'viewprkdet/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'viewprkdet/css/style.css' %}" type="text/css">
+    <style>
+        .fixed-size {
+    width: 100%; /* Ensures responsiveness */
+    height: 300px; /* Set a fixed height */
+    object-fit: cover; /* Ensures the image fills the space without distortion */
+}
+    </style>
+</head>
+<body>
+    <!-- Blog Section -->
+    <section class="blog spad">
+        <div class="container">
+            <div class="row">
+                <!-- Blog Content (Left Side) -->
+                <div class="col-lg-9">
+
+                    <div class="row"><B> <h2> Available Slotes on</h2> {{ current_date|date:"F d, Y" }}</B>
+    {% for i in key %}
+       <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="blog__item">
+                                <div class="blog__item__pic">
+<img src="/media/{{ i.Veh_image }}" class="img-fluid fixed-size"  alt="Vehicle Image">
+                                   <ul>
+                                            <li>Building Name: {{ i.Bid.BuildingName }}</li>  <!-- Fetch Building Name -->
+                                            <li>Company Name: {{ i.Cid.CompanyName }}</li>  <!-- Fetch Company Name -->
+                                            <br><li> <div class="offcanvas__widget">
+                                                 <a href="{% url 'view_and_book' i.id %}" class="primary-btn">view and book slot</a>
+                                                     </div></li>
+                                   </ul>
+
+                                     <div class="container" style="padding: 4px 16px;">
+                                        <h4><b>{{ i.Location }}</b></h4>
+                                        <p>Total Availability :{{ i.T_no_vehicle }} Slot</p>
+                                      </div>
+                                            </div><br><br><br><br><br>
+                                <div class="blog__item__text" style="margin-top: 40px;">
+                                </div>
+                            </div>
+                        </div><br><br>
+    {% empty %}
+        <p>No matching data found.</p>
+    {% endfor %}
+</div>
+
+                    <!-- Pagination -->
+                    <div class="pagination__option">
+                    </div>
+                </div>
+                <!-- Right Sidebar (Search + Feature News + Categories) -->
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="blog__sidebar">
+                        <!-- 🔍 Search Bar (Moved to Sidebar) -->
+                       <form action="{% url 'search_parking' %}" method="GET" class="blog__sidebar__search">
+                            <input type="text" name="q" placeholder="Search Your Desired Area" value="{{ query }}">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                        {% if message %}
+                            <p style="color: red;">{{ message }}</p>
+                        {% endif %}
+
+
+
+                                            <!-- 🔥 Feature News -->
+<!--                        <div class="blog__sidebar__feature">-->
+<!--                            <h4>Feature News</h4>-->
+<!--                            {% for news in feature_news %}-->
+<!--                            <div class="blog__sidebar__feature__item">-->
+<!--                                <h6><a href="#">{{ news.title }}</a></h6>-->
+<!--                                <ul>-->
+<!--                                    <li>By {{ news.author }}</li>-->
+<!--                                    <li>{{ news.date_posted|date:"M d, Y" }}</li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                            {% endfor %}-->
+<!--                        </div>-->
+
+                        <!-- 📌 Categories -->
+<!--                        <div class="blog__sidebar__categories">-->
+<!--                            <h4>Categories</h4>-->
+<!--                            <ul>-->
+<!--                                <li><a href="#">Creativity</a></li>-->
+<!--                                <li><a href="#">Design</a></li>-->
+<!--                                <li><a href="#">Inspiration</a></li>-->
+<!--                                <li><a href="#">News</a></li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer set-bg" data-setbg="{% static 'viewprkdet/img/footer-bg.jpg' %}">
+        <div class="container text-center">
+            <p>&copy; <script>document.write(new Date().getFullYear());</script> All rights reserved</p>
+        </div>
+    </footer>
+    <!-- JS Scripts -->
+    <script src="{% static 'viewprkdet/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'viewprkdet/js/bootstrap.min.js' %}"></script>
+</body>
+</html>
+{% endblock %}

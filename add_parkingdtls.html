@@ -1,0 +1,164 @@
+{% extends 'adminpage.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parking Details</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        html, body {
+    overflow-y: auto !important;
+    scroll-behavior: smooth;
+}
+    </style>
+    <script>
+    $(document).ready(function() {
+        $("#buildingSelect").change(function() {
+            var buildingID = $(this).val();
+            $("#companySelect").html('<option value="">--Select--</option>');
+            $("#totalParking").val("");
+            $("#totalVehicles").val("");
+
+            if (buildingID) {
+                $.ajax({
+                    url: "{% url 'get_building_details' %}",
+                    data: { building_id: buildingID },
+                    success: function(response) {
+                        var data = response.split("|||");
+                        if (data.length === 3) {
+                            $("#companySelect").html(data[0]);
+                            $("#totalParking").val(data[1]);
+                            $("#totalVehicles").val(data[2]);
+                        }
+                    },
+                    error: function() {
+                        console.log("Error fetching company data");
+                    }
+                });
+            }
+        });
+
+        $.ajax({
+            url: "{% url 'get_vehicle_types' %}",
+            success: function(response) {
+                $("#vehicletype").html('<option value="">--Select--</option>' + response);
+            },
+            error: function() {
+                console.log("Error fetching vehicle types");
+            }
+        });
+
+        $("#vehicletype").change(function() {
+            var vehicleID = $(this).val();
+            if (vehicleID) {
+                $.ajax({
+                    url: "{% url 'get_vehicle_rate' %}",
+                    data: { vehicle_id: vehicleID },
+                    success: function(response) {
+                        $("#rate").val(response);
+                    },
+                    error: function() {
+                        console.log("Error fetching vehicle rate");
+                    }
+                });
+            } else {
+                $("#rate").val("");
+            }
+        });
+    });
+        $(document).ready(function() {
+    console.log("Document loaded");
+
+    $("#form2").submit(function(event) {
+        console.log("Form submitted!");
+    });
+
+    $("#buildingSelect").change(function() {
+        console.log("Building selected: " + $(this).val());
+    });
+
+    $("#vehicletype").change(function() {
+        console.log("Vehicle type selected: " + $(this).val());
+    });
+
+    $("#submitBtn").click(function() {
+        console.log("Submit button clicked!");
+    });
+});
+    </script>
+</head>
+<body>
+<div class="container mt-5"><br><br><br><br><br><br>
+    <div class="card shadow-lg p-4">
+        <h3 class="text-center mb-4">Add Parking Details</h3>
+            <form name="form2" id="form2" method="post" action="{% url 'addpar_dtls' %}" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Building Name</label>
+                <select class="form-control" name="bname" id="buildingSelect" required>
+                    <option value="">--Select--</option>
+                    {% for building in buildings %}
+                    <option value="{{ building.id }}">{{ building.BuildingName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Company Name</label>
+                <select class="form-control" name="cname" id="companySelect" required>
+                    <option value="">--Select--</option>
+                </select>
+            </div>
+                  <div class="form-group">
+                <label>Location</label>
+                <input type="text" class="form-control" name="location" id="loc" placeholder="Enter the Location">
+            </div>
+
+            <div class="form-group">
+                <label>Total Parking Area</label>
+                <input type="text" class="form-control" name="tparking" id="totalParking" placeholder="Total Parking Area" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Total Number of Vehicles</label>
+                <input type="text" class="form-control" name="noofvehicles" id="totalVehicles" placeholder="Total Number of Vehicles" readonly>
+            </div>
+
+
+            <div class="form-group">
+                <label>Vehicle Type</label>
+                <select class="form-control" name="vtype" id="vehicletype" required>
+                    <option value="">--Select--</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Rate of Vehicles per hour </label>
+                <input type="text" class="form-control" name="rate" id="rate" placeholder="Rate of Vehicles per hour " readonly >
+            </div>
+            <div class="form-group">
+                <label>No.of the vehicle</label>
+                <input type="text" class="form-control" name="no_of_veh" id="no_of_veh" placeholder="Enter the no.of.vehicle allowed">
+            </div>
+
+             <div class="form-group">
+                <label> vehicle Image </label>
+            <input type="file" class="form-control" name="vehicle_image" id="vehicleimage"  >
+
+            </div>
+
+
+                <button type="submit" id="submitBtn" class="btn btn-primary btn-block">Submit</button>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'Clienthomepage.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+    }
+    .receipt-container {
+        width: 50%;
+        background: white;
+        padding: 20px;
+        margin: auto;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+    h2 {
+        text-align: center;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid black;
+        padding: 10px;
+    }
+    .button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        margin-top: 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+    }
+    .print-button {
+        background: #28a745;
+    }
+    .print-button:hover {
+        background: #218838;
+    }
+    .home-button {
+        background: #007bff;
+    }
+    .home-button:hover {
+        background: #0056b3;
+    }
+</style>
+
+<div class="receipt-container">
+    <h2>Parking Receipt</h2>
+    <table>
+        <tr><th>Owner Name</th><td>{{ booking.ownername }}</td></tr>
+        <tr><th>Email</th><td>{{ booking.email }}</td></tr>
+        <tr><th>Parking ID</th><td>{{ booking.parking_id }}</td></tr>
+        <tr><th>Location</th><td>{{ booking.location }}</td></tr>
+        <tr><th>Booking Date</th><td>{{ booking.booking_date }}</td></tr>
+        <tr><th>Booking Time</th><td>{{ booking.booking_time }}</td></tr>
+        <tr><th>Parking Hours</th><td>{{ booking.parking_hours }}</td></tr>
+        <tr><th>No. of Vehicles</th><td>{{ booking.no_of_vehicles }}</td></tr>
+        <tr><th>Payment Mode</th><td>{{ booking.payment_mode }}</td></tr>
+        <tr><th>Total Cost</th><td>Rs.{{ total_cost }}</td></tr>
+    </table>
+
+    <button class="button print-button" onclick="window.print()">Print Receipt</button>
+<!--    <button class="button home-button" onclick="goHome()">Go to Homepage</button>-->
+        <a href="{% url 'index' %}"><button class="button home-button" >Go to Homepage</button></a>
+
+</div>
+
+<script>
+    function goHome() {
+        window.location.href = "index"; // Change this URL if needed
+    }
+</script>
+
+{% endblock %}

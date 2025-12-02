@@ -1,0 +1,119 @@
+{% extends 'Clienthomepage.html' %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 30px; /* Increased spacing below header */
+        }
+
+        table {
+            width: 90%;
+            margin: 0 auto 30px auto; /* Space between table and footer */
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .confirmed {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .cancelled {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h2>Booking Status</h2>
+
+    {% if k %}
+        <table>
+            <tr>
+                <th>Parking ID</th>
+                <th>Building Name</th>
+                <th>Company Name</th>
+                <th>Location</th>
+                <th>Vehicle Name</th>
+                <th>Booking Date</th>
+                <th>Parking Hours</th>
+                <th>No. of Vehicles</th>
+                <th>Payment Mode</th>
+                <th>Status</th>
+            </tr>
+            {% for booking in k %}
+            <tr>
+                <td>{{ booking.id }}</td>
+                <td>{{ booking.building_name }}</td>
+                <td>{{ booking.company_name }}</td>
+                <td>{{ booking.location }}</td>
+                <td>{{ booking.vehicle_name }}</td>
+                <td>{{ booking.booking_date }}</td>
+                <td>{{ booking.parking_hours }}</td>
+                <td>{{ booking.no_of_vehicles }}</td>
+                <td>{{ booking.payment_mode }}</td>
+                <td>
+                    <span class="status {% if booking.status == 'Pending' %}pending{% elif booking.status == 'Confirmed' %}confirmed{% elif booking.status == 'Cancelled' %}cancelled{% endif %}">
+                        {{ booking.status }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No bookings found.</p>
+    {% endif %}
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'adminpage.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /* Centering the form */
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full height of the viewport */
+        }
+        .card {
+            width: 800px; /* Adjust width as needed */
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-container">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title text-center">Add Companies</h4>
+                <p class="card-description"></p>
+                <form class="pt-3" name="form2" id="form2" method="post" action="{% url 'addcmpn' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Building Name</label>
+                        <select name="bname" class="form-control" id="categorySelect" required>
+                            <option>Select</option>
+                            {% for i in key %}
+                            <option value="{{ i.id }}">{{ i.BuildingName }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" class="form-control" id="area" name="cname" placeholder="Enter Category" required>
+                    </div>
+                    <!-- Centered Buttons -->
+                    <div class="text-center">
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-light" onclick="document.getElementById('form2').reset();">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

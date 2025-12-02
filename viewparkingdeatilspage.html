@@ -1,0 +1,22 @@
+{% extends 'Clienthomepage.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <div class="form-group">
+                <label>Building Name</label>
+                <select class="form-control" name="bname" id="buildingSelect" required>
+                    <option value="">--Select--</option>
+                    {% for building in key %}
+                    <option value="{{ building.Location }}">{{ building.Location }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+</body>
+</html>
+{% endblock %}

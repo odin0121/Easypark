@@ -1,0 +1,53 @@
+{% extends 'adminpage.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Building</title>
+    <style>
+        /* Centering the form */
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full height of the viewport */
+        }
+        .card {
+            width: 800px; /* Adjust width as needed */
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-container">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center">Add Building Details</h4>
+                <form class="pt-3" name="form2" id="form2" method="post" action="{% url 'addbuilding' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Building Name</label>
+                        <input type="text" class="form-control" id="bname" name="bname" placeholder="Enter Category" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Area</label>
+                        <input type="text" class="form-control" id="area" name="area" placeholder="Enter Area" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Vehicle Allocation/day</label>
+                        <input type="text" class="form-control" id="total" name="total" placeholder="Enter Total Allocation" required>
+                    </div><br><br>
+                     <div class="text-center">
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-light" onclick="document.getElementById('form2').reset();">Cancel</button>
+                    </div></form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

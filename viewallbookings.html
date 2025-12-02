@@ -1,0 +1,137 @@
+{% extends 'adminpage.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookings</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            font-weight: 300;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: auto;
+            padding: 100px;
+            background-color: white; /* Changed to white */
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #B3BDCA;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ccc;
+            color: black; /* Text color black */
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .button {
+            display: inline-block;
+            padding: 8px;
+            background-color: #4a8a89;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .detail {
+            display: none;
+            background-color: #f9f9f9;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .close {
+            margin-top: 10px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.button').on('click', function(e) {
+                e.preventDefault();
+                var detailBox = $(this).closest('tr').next('.detail');
+                $('.detail').not(detailBox).hide();
+                detailBox.toggle();
+            });
+            $('.close').on('click', function() {
+                $(this).closest('.detail').hide();
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>List of Bookings</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in key reversed %}
+                <tr>
+                    <td>{{ i.ownername }}</td>
+                    <td>{{ i.email }}</td>
+                    <td><a href="#" class="button">View Details</a></td>
+                </tr>
+                <tr class="detail">
+                    <td colspan="3">
+                        <h2>Booking Details</h2>
+                        <p><strong>Name:</strong> {{ i.ownername }}</p>
+                        <p><strong>Email:</strong> {{ i.email }}</p>
+                        <p><strong>Date of Parking:</strong> {{ i.booking_date }}</p>
+                        <p><strong>Building:</strong> {{ i.bname }}</p>
+                        <p><strong>Company:</strong> {{ i.company_name }}</p>
+                        <p><strong>Location:</strong> {{ i.location }}</p>
+                        <p><strong>Vehicle:</strong> {{ i.vehicle_name }}</p>
+                        <p><strong>Vehicle Rate:</strong> {{ i.vehicle_rate }}</p>
+                        <p><strong>No.of Vehicles :</strong> {{ i.no_ofveh }}</p>
+                        <p><strong>Payment Mode:</strong> {{ i.payment_mode }}</p>
+                        <p><strong>Payment :</strong> {{ i.status }}</p>
+                        <p><strong>Booking Time:</strong>{{i.bookingtime}}</p>
+                        <button class="close">Close</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+{% endblock %}
